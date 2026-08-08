@@ -12,12 +12,14 @@ import {
   LogIn,
   Laptop,
   AlertTriangle,
-  RefreshCw,
-  HelpCircle
+  RefreshCw
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 export default function EmployeeDashboard() {
+  const auth = useAuth();
+  const user = auth?.user || { name: 'David Chen', companyName: 'Acme Corporation', employeeId: 'NOV-101', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80' };
+
   const [clockedIn, setClockedIn] = useState(false);
   const [clockInTime, setClockInTime] = useState(null);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
@@ -46,7 +48,7 @@ export default function EmployeeDashboard() {
         await fetch('/api/attendance/clockin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ employeeName: 'David Chen', employeeId: 'NOV-101' })
+          body: JSON.stringify({ employeeName: user.name, employeeId: user.employeeId || 'NOV-101' })
         });
       } catch (e) {}
       setAttendanceLogs(prev => [
@@ -59,7 +61,6 @@ export default function EmployeeDashboard() {
     }
   };
 
-  // Open Issue Reporting for specific hardware asset
   const openReportModal = (asset) => {
     setSelectedAsset(asset);
     setShowReportIssueModal(true);
@@ -78,7 +79,7 @@ export default function EmployeeDashboard() {
           description: issueDescription || 'Hardware malfunctioning or requires maintenance',
           category: 'IT Support',
           priority: 'High',
-          employeeName: 'David Chen'
+          employeeName: user.name
         })
       });
       if (res.ok) {
@@ -95,24 +96,24 @@ export default function EmployeeDashboard() {
   return (
     <div className="space-y-8">
       {/* Top Banner: Employee Self Service */}
-      <div className="p-8 rounded-3xl glass-card bg-gradient-to-r from-violet-950/70 via-slate-900/90 to-indigo-950/70 border border-violet-500/30 relative overflow-hidden shadow-2xl">
+      <div className="p-8 rounded-3xl glass-card bg-gradient-to-r from-sky-950/70 via-slate-900/90 to-indigo-950/70 border border-sky-500/30 relative overflow-hidden shadow-2xl">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
           <div className="flex items-center gap-5">
             <img
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"
-              alt="David Chen"
-              className="w-20 h-20 rounded-2xl object-cover ring-4 ring-indigo-500/30 shadow-2xl"
+              src={user.avatar || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"}
+              alt={user.name}
+              className="w-20 h-20 rounded-2xl object-cover ring-4 ring-sky-500/40 shadow-2xl"
             />
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-2xl font-black text-white">Welcome back, David! 👋</h2>
-                <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-violet-500/20 text-violet-300 border border-violet-500/30">
-                  NOV-101
+                <h2 className="text-2xl font-black text-white">Welcome back, {user.name}! 👋</h2>
+                <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                  {user.employeeId || 'NOV-101'}
                 </span>
               </div>
-              <p className="text-sm text-slate-300 font-semibold">Senior Full Stack Lead • Engineering Department</p>
+              <p className="text-sm text-slate-300 font-semibold">{user.jobTitle || 'Senior Full Stack Lead'} • {user.department || 'Engineering'}</p>
               <p className="text-xs text-slate-400 flex items-center gap-1.5 mt-1 font-medium">
-                <Building2 className="w-3.5 h-3.5 text-indigo-400" /> Acme Corporation Headquarters
+                <Building2 className="w-3.5 h-3.5 text-sky-400" /> {user.companyName || 'Acme Corporation'} Headquarters
               </p>
             </div>
           </div>
@@ -120,7 +121,7 @@ export default function EmployeeDashboard() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowLeaveModal(true)}
-              className="px-5 py-3 rounded-2xl glass-panel text-xs font-bold text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/20 transition-all flex items-center gap-2"
+              className="px-5 py-3 rounded-2xl glass-panel text-xs font-bold text-sky-300 border border-sky-500/30 hover:bg-sky-500/20 transition-all flex items-center gap-2"
             >
               <Calendar className="w-4 h-4" /> Apply for Leave
             </button>
@@ -143,12 +144,12 @@ export default function EmployeeDashboard() {
         </div>
       )}
 
-      {/* Main Section 1: Optimized Geofenced Clock-In / Clock-Out Control */}
+      {/* Main Section 1: Geofenced Clock-In / Clock-Out Control */}
       <div className="p-8 rounded-3xl glass-card border border-slate-800 space-y-6 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
           <div>
             <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-cyan-400" />
+              <Clock className="w-5 h-5 text-sky-400" />
               <h3 className="text-base font-extrabold text-white">Geofenced Attendance Control</h3>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">IP Verified Clock In & Clock Out System</p>
@@ -219,25 +220,25 @@ export default function EmployeeDashboard() {
 
       {/* Leave Balances Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="p-6 rounded-3xl glass-card border border-indigo-500/20 flex items-center justify-between">
+        <div className="p-6 rounded-3xl glass-card border border-sky-500/20 flex items-center justify-between">
           <div>
             <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Casual Leave</p>
             <p className="text-3xl font-black text-white mt-1">8 Days</p>
-            <p className="text-xs text-indigo-300 mt-1">Out of 12 Annual</p>
+            <p className="text-xs text-sky-300 mt-1">Out of 12 Annual</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-indigo-500/10 text-indigo-400">
+          <div className="p-3.5 rounded-2xl bg-sky-500/10 text-sky-400">
             <Calendar className="w-6 h-6" />
           </div>
         </div>
 
-        <div className="p-6 rounded-3xl glass-card border border-pink-500/20 flex items-center justify-between">
+        <div className="p-6 rounded-3xl glass-card border border-indigo-500/20 flex items-center justify-between">
           <div>
             <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Sick Leave</p>
             <p className="text-3xl font-black text-white mt-1">5 Days</p>
-            <p className="text-xs text-pink-300 mt-1">Out of 7 Annual</p>
+            <p className="text-xs text-indigo-300 mt-1">Out of 7 Annual</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-pink-500/10 text-pink-400">
-            <ShieldCheck className="w-6 h-6" />
+          <div className="p-3.5 rounded-2xl bg-indigo-500/10 text-indigo-400">
+            <CheckCircle2 className="w-6 h-6" />
           </div>
         </div>
 
@@ -253,11 +254,11 @@ export default function EmployeeDashboard() {
         </div>
       </div>
 
-      {/* Interactive Assigned IT Equipment Section with Actions */}
+      {/* Interactive Assigned IT Equipment Section */}
       <div className="p-6 rounded-3xl glass-card border border-slate-800 space-y-4">
         <div className="flex justify-between items-center border-b border-slate-800 pb-3">
           <h3 className="text-base font-extrabold text-white flex items-center gap-2">
-            <Laptop className="w-5 h-5 text-indigo-400" /> Assigned Company Equipment & Support Actions
+            <Laptop className="w-5 h-5 text-sky-400" /> Assigned Company Equipment & Support Actions
           </h3>
           <span className="text-xs text-slate-400">Direct IT Ticket Reporting Active</span>
         </div>
@@ -285,9 +286,9 @@ export default function EmployeeDashboard() {
                 </button>
                 <button
                   onClick={() => openReportModal(asset)}
-                  className="px-3 py-1.5 rounded-xl glass-panel hover:border-indigo-500/40 text-slate-300 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-xl glass-panel hover:border-sky-500/40 text-slate-300 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5"
                 >
-                  <RefreshCw className="w-3.5 h-3.5 text-indigo-400" /> Request Replacement
+                  <RefreshCw className="w-3.5 h-3.5 text-sky-400" /> Request Replacement
                 </button>
               </div>
             </div>
@@ -331,7 +332,7 @@ export default function EmployeeDashboard() {
       {/* Apply Leave Modal */}
       {showLeaveModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
-          <div className="w-full max-w-md p-6 rounded-3xl glass-card border border-indigo-500/40 space-y-4">
+          <div className="w-full max-w-md p-6 rounded-3xl glass-card border border-sky-500/40 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h3 className="text-base font-bold text-white">Apply for Leave</h3>
               <button onClick={() => setShowLeaveModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
@@ -385,11 +386,11 @@ export default function EmployeeDashboard() {
       {/* Payslip PDF Viewer Modal */}
       {showPayslipModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
-          <div className="w-full max-w-lg p-6 rounded-3xl glass-card border border-indigo-500/40 space-y-4">
+          <div className="w-full max-w-lg p-6 rounded-3xl glass-card border border-sky-500/40 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
                 <h3 className="text-base font-bold text-white">August 2026 Payslip</h3>
-                <p className="text-xs text-slate-400">Acme Corporation • NOV-101</p>
+                <p className="text-xs text-slate-400">Acme Corporation • {user.employeeId || 'NOV-101'}</p>
               </div>
               <button onClick={() => setShowPayslipModal(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
             </div>
@@ -416,7 +417,7 @@ export default function EmployeeDashboard() {
                 <span className="font-mono font-bold text-rose-400">-$7,500</span>
               </div>
               <div className="flex justify-between pt-2 text-sm font-extrabold">
-                <span className="text-indigo-300">Net Take-Home Pay</span>
+                <span className="text-sky-300">Net Take-Home Pay</span>
                 <span className="font-mono text-emerald-400">$108,500</span>
               </div>
             </div>

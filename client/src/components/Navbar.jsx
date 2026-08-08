@@ -32,36 +32,34 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#050811]/85 backdrop-blur-xl border-b border-slate-800/60 px-6 py-3.5 flex items-center justify-between shadow-sm">
+    <header className="sticky top-0 z-40 w-full bg-[#071126]/80 backdrop-blur-2xl border-b border-sky-500/25 px-6 py-3.5 flex items-center justify-between shadow-[0_4px_30px_rgba(2,132,199,0.15)]">
       {/* Brand Context */}
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 via-violet-500 to-emerald-500 p-0.5 shadow-md">
-          <div className="w-full h-full bg-[#050811] rounded-[10px] flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-indigo-400" />
+        <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-sky-400 via-cyan-400 to-indigo-500 p-0.5 shadow-[0_0_20px_rgba(56,189,248,0.4)]">
+          <div className="w-full h-full bg-[#071126] rounded-[14px] flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-sky-400" />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-extrabold text-sm tracking-tight text-white">Nova HRMS</h1>
-            <span className="text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              Enterprise
-            </span>
+            <h1 className="font-black text-base tracking-tight text-white">Nova HRMS</h1>
+            
           </div>
         </div>
       </div>
 
-      {/* Role Switcher & Actions (Clean, No Search Bar) */}
+      {/* Role Switcher & Actions */}
       <div className="flex items-center gap-4">
         {/* Reset Data Button */}
         <button
           onClick={handleResetData}
           disabled={resetting}
           title="Reset database to 1 clean sample record per feature"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/25 text-xs font-bold transition-all disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 text-xs font-bold transition-all disabled:opacity-50"
         >
           {resetDone ? (
             <>
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Reset Clean
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Data Clean
             </>
           ) : (
             <>
@@ -71,8 +69,8 @@ export default function Navbar() {
         </button>
 
         {/* Role Switcher Segmented Control */}
-        <div className="flex items-center bg-slate-900/80 p-1 rounded-xl border border-slate-800/80">
-          <span className="text-[10px] text-slate-400 px-2 font-bold uppercase tracking-wider hidden md:inline">
+        <div className="flex items-center bg-[#0a1836]/90 p-1 rounded-2xl border border-sky-500/30 shadow-inner">
+          <span className="text-[10px] text-sky-300/80 px-2 font-black uppercase tracking-wider hidden md:inline">
             Role Scope:
           </span>
 
@@ -83,10 +81,10 @@ export default function Navbar() {
                 <button
                   key={r.key}
                   onClick={() => switchRole(r.key)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 ${
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all duration-200 ${
                     isActive
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                      ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-[0_0_15px_rgba(56,189,248,0.4)]'
+                      : 'text-slate-300 hover:text-white hover:bg-white/5'
                   }`}
                 >
                   {r.label}
@@ -97,18 +95,18 @@ export default function Navbar() {
         </div>
 
         {/* User Profile Badge */}
-        <div className="flex items-center gap-3 pl-3 border-l border-slate-800/80">
+        <div className="flex items-center gap-3 pl-3 border-l border-sky-500/20">
           <div className="relative">
             <img
               src={user.avatar}
               alt={user.name}
-              className="w-8 h-8 rounded-xl object-cover ring-2 ring-indigo-500/20"
+              className="w-8 h-8 rounded-xl object-cover ring-2 ring-sky-400/40 shadow-md"
             />
-            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-[#050811]"></span>
+            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#071126]"></span>
           </div>
           <div className="hidden lg:block text-left">
-            <p className="text-xs font-bold text-slate-100">{user.name}</p>
-            <p className="text-[10px] text-indigo-400 font-semibold">{user.roleLabel || user.jobTitle}</p>
+            <p className="text-xs font-black text-white">{user.name}</p>
+            <p className="text-[10px] text-sky-400 font-bold">{user.roleLabel || user.jobTitle}</p>
           </div>
         </div>
       </div>

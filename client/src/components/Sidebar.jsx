@@ -56,13 +56,13 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-60 bg-[#050811]/90 backdrop-blur-xl border-r border-slate-800/60 p-4 min-h-[calc(100vh-61px)] flex flex-col justify-between hidden md:flex shrink-0">
+    <aside className="w-64 bg-[#071126]/80 backdrop-blur-2xl border-r border-sky-500/25 p-5 min-h-[calc(100vh-61px)] flex flex-col justify-between hidden md:flex shrink-0">
       <div className="space-y-6">
         <div>
-          <p className="px-3 text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-3">
-            Platform Menu
+          <p className="px-3 text-[10px] font-black text-sky-400/80 uppercase tracking-widest mb-3">
+            Module Navigation
           </p>
-          <nav className="space-y-1">
+          <nav className="space-y-1.5">
             {navItems.map((item, idx) => {
               const Icon = item.icon;
               return (
@@ -70,19 +70,19 @@ export default function Sidebar() {
                   key={idx}
                   to={item.path}
                   className={({ isActive }) =>
-                    `flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all duration-150 group ${
+                    `flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all duration-200 group ${
                       isActive
-                        ? 'bg-indigo-600 text-white shadow-sm'
-                        : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/40'
+                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-[0_0_20px_rgba(56,189,248,0.4)]'
+                        : 'text-slate-300 hover:text-white hover:bg-sky-500/10'
                     }`
                   }
                 >
-                  <div className="flex items-center gap-2.5">
-                    <Icon className="w-4 h-4 text-indigo-400 group-hover:scale-105 transition-transform" />
+                  <div className="flex items-center gap-3">
+                    <Icon className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
                     <span className="tracking-tight">{item.label}</span>
                   </div>
                   {item.badge && (
-                    <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                    <span className="text-[9px] font-black px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 border border-sky-500/30">
                       {item.badge}
                     </span>
                   )}
@@ -91,16 +91,6 @@ export default function Sidebar() {
             })}
           </nav>
         </div>
-      </div>
-
-      <div className="p-3 rounded-xl glass-panel border border-slate-800/60 space-y-0.5">
-        <div className="flex items-center gap-1.5">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="text-[11px] font-bold text-slate-200">Security Active</span>
-        </div>
-        <p className="text-[10px] text-slate-400 font-medium">
-          SOC2 Type II Verified Scope
-        </p>
       </div>
     </aside>
   );
