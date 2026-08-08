@@ -3,12 +3,16 @@ import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
+import AnnouncementBanner from './components/AnnouncementBanner';
 import DashboardSwitch from './pages/DashboardSwitch';
 import EmployeesPage from './pages/EmployeesPage';
 import PayrollPage from './pages/PayrollPage';
 import AtsPipeline from './pages/AtsPipeline';
 import KudosPage from './pages/KudosPage';
 import HelpdeskPage from './pages/HelpdeskPage';
+import ExpensesPage from './pages/ExpensesPage';
+import ShiftsPage from './pages/ShiftsPage';
+import DocumentsPage from './pages/DocumentsPage';
 import SuperAdminDashboard from './pages/SuperAdminDashboard';
 import CompanyHrManagementPage from './pages/CompanyHrManagementPage';
 import CompanyEmployeeCrudPage from './pages/CompanyEmployeeCrudPage';
@@ -34,6 +38,9 @@ export default function App() {
           />
 
           <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
+            {/* Global Company Broadcast Announcement Banner */}
+            <AnnouncementBanner />
+
             <Routes>
               <Route path="/" element={<DashboardSwitch />} />
               <Route path="/hrs" element={<CompanyHrManagementPage />} />
@@ -44,6 +51,9 @@ export default function App() {
               <Route path="/employees" element={<EmployeesPage />} />
               <Route path="/leaves" element={<CompanyAttendanceLeavesPage />} />
               <Route path="/payroll" element={<PayrollPage />} />
+              <Route path="/expenses" element={<ExpensesPage />} />
+              <Route path="/shifts" element={<ShiftsPage />} />
+              <Route path="/documents" element={<DocumentsPage />} />
               <Route path="/ats" element={<AtsPipeline />} />
               <Route path="/kudos" element={<KudosPage />} />
               <Route path="/helpdesk" element={<HelpdeskPage />} />

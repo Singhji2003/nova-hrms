@@ -12,6 +12,9 @@ import {
   ShieldCheck,
   Building2,
   Award,
+  Receipt,
+  CalendarDays,
+  FileCheck,
   X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -33,6 +36,9 @@ export default function Sidebar({ isOpenOnMobile, onCloseMobileSidebar }) {
       { label: 'Employee Directory', path: '/company-employees', icon: Users, badge: 'CRUD' },
       { label: 'Attendance & Leaves', path: '/company-attendance', icon: Clock, badge: 'Charts' },
       { label: 'Payroll Summary', path: '/company-payroll', icon: DollarSign, badge: 'Payroll' },
+      { label: 'Expense Claims', path: '/expenses', icon: Receipt, badge: 'Finance' },
+      { label: 'Shift Roster Planner', path: '/shifts', icon: CalendarDays, badge: 'Shifts' },
+      { label: 'Document Vault', path: '/documents', icon: FileCheck, badge: 'Vault' },
       { label: 'Helpdesk & Ratings', path: '/company-performance', icon: Award, badge: 'Metrics' },
     ];
   } else if (currentRole === 'hr') {
@@ -40,7 +46,10 @@ export default function Sidebar({ isOpenOnMobile, onCloseMobileSidebar }) {
       { label: 'HR Control Panel', path: '/', icon: LayoutDashboard, badge: 'Manager' },
       { label: 'Employees & Org', path: '/employees', icon: Users },
       { label: 'Attendance & Leaves', path: '/leaves', icon: Clock },
+      { label: 'Shift Roster', path: '/shifts', icon: CalendarDays },
       { label: 'Payroll & Taxes', path: '/payroll', icon: DollarSign },
+      { label: 'Expense Reimbursements', path: '/expenses', icon: Receipt, badge: 'Claims' },
+      { label: 'Document Vault', path: '/documents', icon: FileCheck },
       { label: 'AI ATS (Talent)', path: '/ats', icon: Briefcase, badge: 'AI Match' },
       { label: 'Culture & Kudos', path: '/kudos', icon: HeartHandshake },
       { label: 'Helpdesk & IT', path: '/helpdesk', icon: HelpCircle },
@@ -51,6 +60,9 @@ export default function Sidebar({ isOpenOnMobile, onCloseMobileSidebar }) {
       { label: 'My ESS Portal', path: '/', icon: LayoutDashboard, badge: 'Self-Service' },
       { label: 'Colleagues & Directory', path: '/employees', icon: Users },
       { label: 'Clock In & Leaves', path: '/leaves', icon: Clock },
+      { label: 'My Shift Roster', path: '/shifts', icon: CalendarDays },
+      { label: 'My Expense Claims', path: '/expenses', icon: Receipt },
+      { label: 'My Documents', path: '/documents', icon: FileCheck },
       { label: 'My Payslips', path: '/payroll', icon: DollarSign },
       { label: 'Kudos & Recognition', path: '/kudos', icon: HeartHandshake },
     ];
@@ -69,7 +81,7 @@ export default function Sidebar({ isOpenOnMobile, onCloseMobileSidebar }) {
         <p className="px-3 text-[10px] font-black text-sky-400/80 uppercase tracking-widest mb-3">
           Module Navigation
         </p>
-        <nav className="space-y-1.5">
+        <nav className="space-y-1">
           {navItems.map((item, idx) => {
             const Icon = item.icon;
             return (
@@ -78,7 +90,7 @@ export default function Sidebar({ isOpenOnMobile, onCloseMobileSidebar }) {
                 to={item.path}
                 onClick={onCloseMobileSidebar}
                 className={({ isActive }) =>
-                  `flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all duration-200 group ${
+                  `flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all duration-200 group ${
                     isActive
                       ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-[0_0_20px_rgba(56,189,248,0.4)]'
                       : 'text-slate-300 hover:text-white hover:bg-sky-500/10'
