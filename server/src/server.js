@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import apiRoutes from './routes/api.js';
 import { seedDatabase } from './utils/seeder.js';
@@ -22,15 +23,29 @@ app.use(express.json());
 // API Routes
 app.use('/api', apiRoutes);
 
-// Serve client dist static files in production
-const clientDistPath = path.join(__dirname, '../../client/dist');
-app.use(express.static(clientDistPath));
-
-app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(clientDistPath, 'index.html'));
-  }
+// Root route for backend status
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    service: 'Nova HRMS Backend API Server',
+    database: 'MongoDB Atlas',
+    version: '2.0.0',
+    timestamp: new Date()
+  });
 });
+
+// Serve client dist static files ONLY if built in same workspace
+const clientDistPath = path.join(__dirname, '../../client/dist');
+const indexPath = path.join(clientDistPath, 'index.html');
+
+if (fs.existsSync(indexPath)) {
+  app.use(express.static(clientDistPath));
+  app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+      res.sendFile(indexPath);
+    }
+  });
+}
 
 // MongoDB Connection with automatic seeding
 mongoose.connect(MONGODB_URI)
