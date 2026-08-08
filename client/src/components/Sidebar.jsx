@@ -11,11 +11,12 @@ import {
   Building,
   ShieldCheck,
   Building2,
-  Award
+  Award,
+  X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-export default function Sidebar() {
+export default function Sidebar({ isOpenOnMobile, onCloseMobileSidebar }) {
   const { currentRole } = useAuth();
 
   let navItems = [];
@@ -55,43 +56,71 @@ export default function Sidebar() {
     ];
   }
 
-  return (
-    <aside className="w-64 bg-[#071126]/80 backdrop-blur-2xl border-r border-sky-500/25 p-5 min-h-[calc(100vh-61px)] flex flex-col justify-between hidden md:flex shrink-0">
-      <div className="space-y-6">
-        <div>
-          <p className="px-3 text-[10px] font-black text-sky-400/80 uppercase tracking-widest mb-3">
-            Module Navigation
-          </p>
-          <nav className="space-y-1.5">
-            {navItems.map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <NavLink
-                  key={idx}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all duration-200 group ${
-                      isActive
-                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-[0_0_20px_rgba(56,189,248,0.4)]'
-                        : 'text-slate-300 hover:text-white hover:bg-sky-500/10'
-                    }`
-                  }
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
-                    <span className="tracking-tight">{item.label}</span>
-                  </div>
-                  {item.badge && (
-                    <span className="text-[9px] font-black px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 border border-sky-500/30">
-                      {item.badge}
-                    </span>
-                  )}
-                </NavLink>
-              );
-            })}
-          </nav>
-        </div>
+  const sidebarContent = (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between md:hidden pb-3 border-b border-sky-500/20">
+        <span className="text-xs font-black text-white uppercase tracking-wider">Navigation Menu</span>
+        <button onClick={onCloseMobileSidebar} className="p-1 rounded-lg text-slate-400 hover:text-white">
+          <X className="w-5 h-5" />
+        </button>
       </div>
-    </aside>
+
+      <div>
+        <p className="px-3 text-[10px] font-black text-sky-400/80 uppercase tracking-widest mb-3">
+          Module Navigation
+        </p>
+        <nav className="space-y-1.5">
+          {navItems.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={idx}
+                to={item.path}
+                onClick={onCloseMobileSidebar}
+                className={({ isActive }) =>
+                  `flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all duration-200 group ${
+                    isActive
+                      ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-[0_0_20px_rgba(56,189,248,0.4)]'
+                      : 'text-slate-300 hover:text-white hover:bg-sky-500/10'
+                  }`
+                }
+              >
+                <div className="flex items-center gap-3">
+                  <Icon className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
+                  <span className="tracking-tight">{item.label}</span>
+                </div>
+                {item.badge && (
+                  <span className="text-[9px] font-black px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                    {item.badge}
+                  </span>
+                )}
+              </NavLink>
+            );
+          })}
+        </nav>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Fixed Sidebar */}
+      <aside className="w-64 bg-[#071126]/80 backdrop-blur-2xl border-r border-sky-500/25 p-5 min-h-[calc(100vh-61px)] flex-col justify-between hidden md:flex shrink-0">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile Drawer Overlay */}
+      {isOpenOnMobile && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          <div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+            onClick={onCloseMobileSidebar}
+          ></div>
+          <div className="relative w-72 bg-[#071126] border-r border-sky-500/30 p-5 min-h-full overflow-y-auto shadow-2xl z-10">
+            {sidebarContent}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

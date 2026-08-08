@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
@@ -17,15 +17,23 @@ import CompanyPayrollSummaryPage from './pages/CompanyPayrollSummaryPage';
 import CompanyPerformanceHelpdeskPage from './pages/CompanyPerformanceHelpdeskPage';
 
 export default function App() {
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
   return (
     <AuthProvider>
-      <div className="min-h-screen flex flex-col bg-[#090d16] text-slate-100 font-sans">
-        <Navbar />
+      <div className="min-h-screen flex flex-col bg-[#060d1e] text-slate-100 font-sans">
+        <Navbar
+          onToggleMobileSidebar={() => setIsMobileSidebarOpen(prev => !prev)}
+          isMobileSidebarOpen={isMobileSidebarOpen}
+        />
 
-        <div className="flex flex-1">
-          <Sidebar />
+        <div className="flex flex-1 relative">
+          <Sidebar
+            isOpenOnMobile={isMobileSidebarOpen}
+            onCloseMobileSidebar={() => setIsMobileSidebarOpen(false)}
+          />
 
-          <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
+          <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
             <Routes>
               <Route path="/" element={<DashboardSwitch />} />
               <Route path="/hrs" element={<CompanyHrManagementPage />} />
