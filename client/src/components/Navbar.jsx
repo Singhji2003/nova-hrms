@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Sparkles, RotateCcw, CheckCircle2, Menu, X } from 'lucide-react';
+import { Sparkles, RotateCcw, CheckCircle2, Menu, X, Shield } from 'lucide-react';
 
 export default function Navbar({ onToggleMobileSidebar, isMobileSidebarOpen }) {
   const { user, currentRole, switchRole } = useAuth();
@@ -32,10 +32,9 @@ export default function Navbar({ onToggleMobileSidebar, isMobileSidebarOpen }) {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#071126]/85 backdrop-blur-2xl border-b border-sky-500/25 px-4 md:px-6 py-3 flex items-center justify-between shadow-[0_4px_30px_rgba(2,132,199,0.15)]">
-      {/* Brand Context & Mobile Menu Toggle */}
+    <header className="sticky top-0 z-40 w-full bg-[#080d1a]/90 backdrop-blur-2xl border-b border-slate-800/80 px-4 md:px-8 py-3.5 flex items-center justify-between shadow-md">
+      {/* Brand Context */}
       <div className="flex items-center gap-3">
-        {/* Mobile Hamburger Toggle Button */}
         <button
           onClick={onToggleMobileSidebar}
           className="md:hidden p-2 rounded-xl glass-panel text-sky-400 hover:text-white"
@@ -44,26 +43,29 @@ export default function Navbar({ onToggleMobileSidebar, isMobileSidebarOpen }) {
           {isMobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
 
-        <div className="w-8 h-8 md:w-9 md:h-9 rounded-2xl bg-gradient-to-tr from-sky-400 via-cyan-400 to-indigo-500 p-0.5 shadow-[0_0_20px_rgba(56,189,248,0.4)]">
-          <div className="w-full h-full bg-[#071126] rounded-[14px] flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-sky-400" />
+        <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-sky-400 via-indigo-500 to-violet-500 p-0.5 shadow-[0_0_20px_rgba(56,189,248,0.3)]">
+          <div className="w-full h-full bg-[#080d1a] rounded-[14px] flex items-center justify-center">
+            <Sparkles className="w-4.5 h-4.5 text-sky-400" />
           </div>
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-black text-sm md:text-base tracking-tight text-white">Nova HRMS</h1>
+            <h1 className="font-extrabold text-base tracking-tight text-white">Nova HRMS</h1>
+            <span className="hidden sm:inline-block text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20">
+              Enterprise
+            </span>
           </div>
         </div>
       </div>
 
       {/* Role Switcher & Actions */}
-      <div className="flex items-center gap-2 md:gap-4">
+      <div className="flex items-center gap-3 md:gap-5">
         {/* Reset Data Button */}
         <button
           onClick={handleResetData}
           disabled={resetting}
           title="Reset database to 1 clean sample record per feature"
-          className="flex items-center gap-1 px-2.5 py-1.5 md:px-3.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 text-[11px] md:text-xs font-bold transition-all disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20 text-xs font-bold transition-all disabled:opacity-50"
         >
           {resetDone ? (
             <>
@@ -77,18 +79,22 @@ export default function Navbar({ onToggleMobileSidebar, isMobileSidebarOpen }) {
         </button>
 
         {/* Role Switcher Segmented Control */}
-        <div className="flex items-center bg-[#0a1836]/90 p-1 rounded-2xl border border-sky-500/30 overflow-x-auto max-w-[200px] sm:max-w-none">
-          <div className="flex items-center gap-0.5 md:gap-1">
+        <div className="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+          <span className="text-[10px] text-slate-400 px-2 font-bold uppercase tracking-wider hidden lg:inline">
+            Role Scope:
+          </span>
+
+          <div className="flex items-center gap-1">
             {rolesConfig.map((r) => {
               const isActive = currentRole === r.key;
               return (
                 <button
                   key={r.key}
                   onClick={() => switchRole(r.key)}
-                  className={`px-2 py-1 md:px-3 py-1.5 rounded-xl text-[10px] md:text-xs font-extrabold transition-all duration-200 whitespace-nowrap ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-[0_0_15px_rgba(56,189,248,0.4)]'
-                      : 'text-slate-300 hover:text-white hover:bg-white/5'
+                      ? 'bg-sky-600 text-white shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
                   }`}
                 >
                   {r.label}
@@ -99,18 +105,18 @@ export default function Navbar({ onToggleMobileSidebar, isMobileSidebarOpen }) {
         </div>
 
         {/* User Profile Avatar */}
-        <div className="flex items-center gap-2.5 pl-2 md:pl-3 border-l border-sky-500/20">
+        <div className="flex items-center gap-3 pl-3 border-l border-slate-800">
           <div className="relative">
             <img
               src={user.avatar}
               alt={user.name}
-              className="w-7 h-7 md:w-8 md:h-8 rounded-xl object-cover ring-2 ring-sky-400/40"
+              className="w-8 h-8 rounded-xl object-cover ring-2 ring-sky-500/30"
             />
-            <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#071126]"></span>
+            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#080d1a]"></span>
           </div>
           <div className="hidden lg:block text-left">
-            <p className="text-xs font-black text-white">{user.name}</p>
-            <p className="text-[10px] text-sky-400 font-bold">{user.roleLabel || user.jobTitle}</p>
+            <p className="text-xs font-extrabold text-white">{user.name}</p>
+            <p className="text-[10px] text-sky-400 font-semibold">{user.roleLabel || user.jobTitle}</p>
           </div>
         </div>
       </div>
